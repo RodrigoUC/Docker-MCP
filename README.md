@@ -1,6 +1,7 @@
 # Docker MCP Server
 
 Servidor MCP para controlar Docker con lenguaje natural usando Cline y modelos gratuitos.
+Esta demostración trata de simular la automatización de la orquestación de contenedores en Docker.
 
 ## Instalación
 
