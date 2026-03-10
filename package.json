@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Servidor MCP para controlar Docker con lenguaje natural",
-  "main": "index.js",
+  "main": "app/index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node app/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.5.0"

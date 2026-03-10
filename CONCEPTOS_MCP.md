@@ -128,3 +128,93 @@ Los **schemas** garantizan que:
 - **MCP es el "puente" entre IA y herramientas**
 
 Esta arquitectura permite que cualquier modelo de IA use las mismas herramientas, sin que el servidor tenga que cambiar.
+
+## Gestión de dependencias en Node.js
+
+### package.json
+
+El **package.json** es el "manifiesto" del proyecto Node.js:
+
+```json
+{
+  "name": "docker-mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app/index.js",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0"
+  }
+}
+```
+
+**Propósito**:
+- **Identifica el proyecto**: nombre, versión, descripción
+- **Define dependencias**: qué bibliotecas necesita el proyecto
+- **Configura el comportamiento**: tipo de módulos (ES6), archivo principal
+- **Scripts de ejecución**: comandos personalizados (`npm start`)
+
+**Campos importantes**:
+- `"type": "module"` → Permite usar `import/export` en lugar de `require`
+- `"main"` → Archivo que se ejecuta cuando alguien importa el paquete
+- `"dependencies"` → Bibliotecas necesarias para que funcione el proyecto
+
+### package-lock.json
+
+El **package-lock.json** es el "registro exacto" de dependencias:
+
+```json
+{
+  "name": "docker-mcp-server",
+  "lockfileVersion": 3,
+  "packages": {
+    "node_modules/@modelcontextprotocol/sdk": {
+      "version": "0.5.0",
+      "resolved": "https://registry.npmjs.org/@modelcontextprotocol/sdk/-/sdk-0.5.0.tgz",
+      "integrity": "sha512-..."
+    }
+  }
+}
+```
+
+**Propósito**:
+- **Versiones exactas**: Registra la versión específica instalada de cada dependencia
+- **Integridad**: Checksums para verificar que los paquetes no fueron modificados
+- **Reproducibilidad**: Garantiza que todos instalen exactamente las mismas versiones
+- **Árbol de dependencias**: Mapea todas las dependencias transitivas
+
+### Diferencias clave
+
+| package.json | package-lock.json |
+|--------------|-------------------|
+| **Qué quieres** | **Qué tienes** |
+| Rangos de versiones (`^0.5.0`) | Versiones exactas (`0.5.0`) |
+| Editable manualmente | Generado automáticamente |
+| Define el proyecto | Define el estado actual |
+| Versionado en git | Versionado en git |
+
+### ¿Por qué ambos archivos?
+
+1. **Flexibilidad vs Estabilidad**:
+   - `package.json`: "Acepto cualquier versión 0.5.x"
+   - `package-lock.json`: "Pero usa exactamente la 0.5.0"
+
+2. **Desarrollo vs Producción**:
+   - En desarrollo: `npm install` puede actualizar versiones
+   - En producción: `npm ci` usa exactamente lo del lock file
+
+3. **Colaboración**:
+   - Todos los desarrolladores obtienen las mismas versiones
+   - Evita el "funciona en mi máquina"
+
+### Comandos importantes
+
+```bash
+npm install          # Instala según package.json, actualiza lock
+npm ci              # Instala según package-lock.json (exacto)
+npm update          # Actualiza dependencias dentro de rangos
+```
+
+**En nuestro proyecto MCP**:
+- `package.json` declara que necesitamos el SDK de MCP
+- `package-lock.json` garantiza que todos usen la misma versión del SDK
+- Esto evita problemas de compatibilidad entre diferentes instalaciones

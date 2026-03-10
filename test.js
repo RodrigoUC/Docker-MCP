@@ -3,7 +3,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 
 const transport = new StdioClientTransport({
   command: "node",
-  args: ["index.js"],
+  args: ["C:\\Users\\Rodri\\OneDrive\\Desktop\\Docker-MCP\\app\\index.js"],
 });
 
 const client = new Client({
