@@ -31,7 +31,7 @@ Crea/edita `%USERPROFILE%\.continue\config.json`:
   "mcpServers": {
     "docker": {
       "command": "node",
-      "args": ["C:\\Users\\Rodri\\OneDrive\\Desktop\\Docker-MCP\\index.js"]
+      "args": ["C:\\Users\\Rodri\\OneDrive\\Desktop\\Docker-MCP\\app\\index.js"]
     }
   }
 }
@@ -45,7 +45,7 @@ En VS Code, abre Cline → Settings → MCP Servers y pega:
   "mcpServers": {
     "docker": {
       "command": "node",
-      "args": ["C:\\Users\\Rodri\\OneDrive\\Desktop\\Docker-MCP\\index.js"]
+      "args": ["C:\\Users\\Rodri\\OneDrive\\Desktop\\Docker-MCP\\app\\index.js"]
     }
   }
 }
@@ -68,6 +68,47 @@ En VS Code, abre Cline → Settings → MCP Servers y pega:
 - "Lista todos los contenedores"
 - "Elimina el contenedor ai_container_0"
 - "Crea 2 contenedores de redis en el puerto 6379"
+
+## Casos de uso y manejo de errores
+
+### ✅ Casos exitosos
+- **Prompt completo**: "Crea 2 contenedores de nginx en puerto 8080"
+- **Imagen con versión**: "Crea 1 contenedor de postgres:15 en puerto 5432"
+- **Eliminar contenedor**: "Elimina el contenedor ai_container_1"
+
+### ❌ Casos de error comunes
+
+#### Parámetros faltantes
+- **Prompt**: "Crea contenedores de nginx"
+- **Error**: El modelo debe solicitar puerto y cantidad
+- **Solución**: Especificar todos los parámetros requeridos
+
+#### Puerto ocupado
+- **Problema**: Crear contenedores en puerto ya usado
+- **Comportamiento**: Los puertos se incrementan automáticamente (8080, 8081, 8082...)
+- **Ejemplo**: Si pides 3 contenedores en puerto 8080, se crean en 8080, 8081, 8082
+
+#### Imagen inexistente
+- **Prompt**: "Crea contenedor de imagen_falsa en puerto 3000"
+- **Error**: Docker no puede descargar la imagen
+- **Mensaje**: "❌ Error: [mensaje de Docker]"
+
+#### Contenedor inexistente para eliminar
+- **Prompt**: "Elimina el contenedor que_no_existe"
+- **Error**: Docker no encuentra el contenedor
+- **Mensaje**: "❌ Error: No such container: que_no_existe"
+
+#### Docker no ejecutándose
+- **Problema**: Docker Desktop cerrado
+- **Error**: "Cannot connect to the Docker daemon"
+- **Solución**: Iniciar Docker Desktop
+
+### Validaciones automáticas
+
+- **Parámetros requeridos**: image, count, port son obligatorios para crear contenedores
+- **Tipos de datos**: count debe ser número, port debe ser número
+- **Nombres únicos**: Los contenedores se nombran ai_container_0, ai_container_1, etc.
+- **Puertos incrementales**: Evita conflictos de puertos automáticamente
 
 ## Requisitos
 
