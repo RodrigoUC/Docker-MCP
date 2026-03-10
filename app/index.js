@@ -122,7 +122,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     // Herramienta para listar contenedores activos
     if (name === "list_containers") {
       // Ejecutar comando docker ps con formato personalizado
-      const output = execSync("docker ps --format '{{.Names}} | {{.Image}} | {{.Ports}}'", {
+      const output = execSync('docker ps --format "{{.Names}} | {{.Image}} | {{.Ports}}"', {
         encoding: "utf-8",
       });
       
